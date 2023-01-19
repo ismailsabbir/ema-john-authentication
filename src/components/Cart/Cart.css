@@ -1,5 +1,22 @@
-.cart{
-    position: sticky;
-    top: 0;
-    padding: 30px 20px;
+.cart {
+  /* position: sticky; */
+  position: sticky;
+  top: 0;
+  padding: 30px 20px;
+  background-color: #12b0e8;
+  margin-top: 30px;
+  height: 600px;
+}
+.clear-btn {
+  width: 100%;
+}
+.cart h4 {
+  text-align: center;
+  color: white;
+  margin-bottom: 4px;
+  border-bottom: 2px solid gray;
+}
+.cart p {
+  font-weight: 500;
+  color: rgb(12, 8, 8);
 }
