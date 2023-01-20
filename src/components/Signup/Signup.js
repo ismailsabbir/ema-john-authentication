@@ -9,16 +9,26 @@ import { useState } from "react";
 
 const Signup = () => {
   const [error, seterror] = useState("");
-  const { createuser } = useContext(AuthContext);
+  const [sucess, setsucess] = useState(false);
+  const { createuser, googlesignup } = useContext(AuthContext);
   const handlesubmit = (event) => {
+    setsucess(false);
     event.preventDefault();
     const form = event.target;
     const emails = form.email.value;
     const password = event.target.password.value;
     const confarm = event.target.confrim.value;
     console.log(emails, password, confarm);
+    if (!/(?=.*[A-Z])/.test(password)) {
+      seterror("At least one capital letter");
+      return;
+    }
     if (password.length < 6) {
       seterror("password should be at least 6 digit");
+      return;
+    }
+    if (!/(?=.*[a-zA-Z >>!#$%&? "<<])[a-zA-Z0-9 >>!#$%&?<< ]/.test(password)) {
+      seterror("At least one special character");
       return;
     }
     if (password !== confarm) {
@@ -30,7 +40,20 @@ const Signup = () => {
       .then((req) => {
         const user = req.user;
         console.log(user);
+
+        setsucess("Signup Sucessfull");
         form.reset();
+      })
+      .catch((error) => {
+        console.error(error);
+        seterror(error.message);
+      });
+  };
+  const googlehandler = () => {
+    googlesignup()
+      .then((req) => {
+        const user = req.user;
+        console.log(user);
       })
       .catch((error) => {
         console.error(error);
@@ -77,20 +100,25 @@ const Signup = () => {
             required
           />
         </Form.Group>
-        <Button className="btn" variant="warning" type="submit" name="submit">
+        <Button className="btn" variant="success" type="submit" name="submit">
           Submit
         </Button>
-        <p className="or">OR</p>
+        <p className="or">--------OR---------</p>
 
-        <Button className="btn" variant="outline-secondary">
+        <Button
+          onClick={googlehandler}
+          className="btn"
+          variant="outline-primary"
+        >
           Continue to Google
         </Button>
         <small>
-          <p>
+          <p className="create">
             Alredy have an Acount? please <Link to="/login">Login</Link>{" "}
           </p>
         </small>
-        <small>{error}</small>
+        <small className="error-message">{error}</small>
+        <small className="sucess-message">{sucess}</small>
       </Form>
     </div>
   );

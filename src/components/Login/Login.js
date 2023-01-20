@@ -60,7 +60,7 @@ const Login = () => {
           Continue to Google
         </Button>
         <small>
-          <p>
+          <p className="create">
             New to Ema-John ? <Link to="/signup">create new acount</Link>{" "}
           </p>
         </small>
