@@ -10,7 +10,8 @@ import { useState } from "react";
 const Signup = () => {
   const [error, seterror] = useState("");
   const [sucess, setsucess] = useState(false);
-  const { createuser, googlesignup } = useContext(AuthContext);
+  const { createuser, googlesignup, emailverification } =
+    useContext(AuthContext);
   const handlesubmit = (event) => {
     setsucess(false);
     event.preventDefault();
@@ -19,6 +20,7 @@ const Signup = () => {
     const password = event.target.password.value;
     const confarm = event.target.confrim.value;
     console.log(emails, password, confarm);
+
     if (!/(?=.*[A-Z])/.test(password)) {
       seterror("At least one capital letter");
       return;
@@ -40,9 +42,15 @@ const Signup = () => {
       .then((req) => {
         const user = req.user;
         console.log(user);
-
-        setsucess("Signup Sucessfull");
         form.reset();
+        emailverification()
+          .then(() => {
+            alert("check your email");
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+        setsucess("Signup Sucessfull");
       })
       .catch((error) => {
         console.error(error);

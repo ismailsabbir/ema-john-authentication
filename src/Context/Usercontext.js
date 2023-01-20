@@ -8,6 +8,8 @@ import {
   onAuthStateChanged,
   GoogleAuthProvider,
   signInWithPopup,
+  sendEmailVerification,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { useState } from "react";
 import app from "../Firebase/Firebase.init";
@@ -34,6 +36,12 @@ const Usercontext = ({ children }) => {
   const googlesignup = () => {
     return signInWithPopup(auth, provider);
   };
+  const emailverification = () => {
+    return sendEmailVerification(auth.currentUser);
+  };
+  const passwordforget = (email) => {
+    return sendPasswordResetEmail(auth, email);
+  };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
       console.log("curent user", currentuser);
@@ -49,6 +57,8 @@ const Usercontext = ({ children }) => {
     userlogin,
     userlogout,
     googlesignup,
+    emailverification,
+    passwordforget,
   };
   return (
     <div>

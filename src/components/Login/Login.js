@@ -5,11 +5,13 @@ import Form from "react-bootstrap/Form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../Context/Usercontext";
+import { useState } from "react";
 const Login = () => {
+  const [emails, setemail] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-  const { userlogin } = useContext(AuthContext);
+  const { userlogin, passwordforget } = useContext(AuthContext);
   const handlelogin = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -27,6 +29,23 @@ const Login = () => {
         console.error(error);
       });
   };
+  const handelsetemail = (event) => {
+    const email = event.target.value;
+    setemail(email);
+  };
+  const handelforgetpassword = () => {
+    passwordforget(emails)
+      .then(() => {
+        alert("please Check your Email");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    if (!emails) {
+      alert("plese enter email address");
+      return;
+    }
+  };
   return (
     <div className="from-container">
       <Form onSubmit={handlelogin} className="froms">
@@ -34,6 +53,7 @@ const Login = () => {
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control
+            onBlur={handelsetemail}
             type="email"
             name="email"
             placeholder="Enter email"
@@ -63,6 +83,9 @@ const Login = () => {
           <p className="create">
             New to Ema-John ? <Link to="/signup">create new acount</Link>{" "}
           </p>
+        </small>
+        <small>
+          <Link onClick={handelforgetpassword}>Forget password</Link>
         </small>
       </Form>
     </div>
